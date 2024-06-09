@@ -1,0 +1,5 @@
+art==6.2
+ascii-magic==2.3.0
+colorama==0.4.6
+pillow==10.3.0
+termcolor==2.4.0
