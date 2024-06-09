@@ -4,12 +4,13 @@ import sys
 from textwrap import dedent
 from typing import List
 
-from .animations import *
-from .verify import *
-
 from ascii_magic import AsciiArt
 from art import text2art
 from termcolor import colored
+
+from .animations import three_dots_message, spinning_loader
+from .verify import check_input
+
 
 IMAGES = {
     'level 1': './images/level_1.png',
@@ -42,9 +43,9 @@ def game_start() -> None:
         " Do you have what it takes to keep going? \033[0m",
         ["yes", "no", "y", "n"])
 
-    if keeps_playing == "n" or keeps_playing == "no":
+    if keeps_playing in ["n", "no"]:
         print("\033[32mWise choice, matey!\033[0m")
-        exit(1)
+        sys.exit()
     spinning_loader("You have been warned", 3)
     first_level()
 
@@ -121,7 +122,7 @@ def win_screen() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
     message = colored("\t\t\tCONGRATULATIONS! YOU WON THE GAME!"
-                      "\n\t\t\t\tHere's your prize!",
+                      "\n\t\t\t\tHere's your reward!",
                       "blue", attrs=["blink"])
     for char in message:
         print(char, end="", flush=True)
@@ -153,6 +154,8 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
     """
     print(colored(treasure_chest, "yellow", attrs=["blink"]))
 
+    sys.exit()
+
 
 def game_over(reason: str) -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -167,4 +170,4 @@ def game_over(reason: str) -> None:
 
     three_dots_message(f"{reason}\n\t\t\t\t\t\t", color_option=1)
     print(colored(text2art("YOU ARE DEAD", font="poison"), "red"))
-    exit(1)
+    sys.exit()

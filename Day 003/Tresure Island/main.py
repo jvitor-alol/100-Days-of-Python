@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-from utils import *
+import sys
+
+import utils
 
 
 def main() -> None:
     try:
-        game_start()
+        utils.game_start()
     except KeyboardInterrupt:
-        exit(1)
+        sys.exit(1)
 
 
 if __name__ == '__main__':

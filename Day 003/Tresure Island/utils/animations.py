@@ -19,5 +19,4 @@ def three_dots_message(message: str, color_option: int = 2) -> None:
     for _ in range(3):
         print(".", end='', flush=True)
         time.sleep(0.5)
-    else:
-        sys.stdout.write('\033[2K\r')
+    sys.stdout.write('\033[2K\r')

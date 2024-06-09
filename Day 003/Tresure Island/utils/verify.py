@@ -1,9 +1,9 @@
 import sys
 from typing import List, Any
 
-from .animations import *
-
 from termcolor import colored
+
+from .animations import three_dots_message
 
 
 def clear_previous_line() -> None:
