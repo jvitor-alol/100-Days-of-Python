@@ -1,4 +1,4 @@
-# Reebord's World Hurdle 1:
+# Reeborg's World Hurdle 1:
 from .reeborgs_world import turn_left, move
 
 

@@ -1,4 +1,5 @@
-# Reeborg's default functions:
+# Reeborg's World: https://reeborg.ca/index_en.html
+# Default functions:
 def turn_left() -> None:
     ...
 

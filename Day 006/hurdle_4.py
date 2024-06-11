@@ -1,6 +1,6 @@
-# Reeborg's World Hurdle 3:
-from .reeborgs_world import turn_left, move
-from .reeborgs_world import wall_in_front, front_is_clear, at_goal
+# Reeborg's World Hurdle 4:
+from .reeborgs_world import turn_left, move, at_goal
+from .reeborgs_world import wall_in_front, front_is_clear, wall_on_right
 
 
 def turn_right():
@@ -10,11 +10,13 @@ def turn_right():
 
 def jump_hurdle():
     turn_left()
-    move()
+    while wall_on_right():
+        move()
     turn_right()
     move()
     turn_right()
-    move()
+    while not wall_in_front():
+        move()
     turn_left()
 
 
