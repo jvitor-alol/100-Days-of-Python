@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import random
+import sys
 
 word_list = ["aardvark", "baboon", "camel"]
 
@@ -26,21 +27,43 @@ word_list = ["aardvark", "baboon", "camel"]
 # Hint - Don't worry about getting the user to guess the next letter.
 # We'll tackle that in step 3.
 
+# Step 3
+# TODO-1: - Use a while loop to let the user guess again.
+# The loop should only stop once the user has guessed all the letters in the
+# chosen_word and 'display' has no more blanks ("_").
+# Then you can tell the user they've won.
+
+
+def player_has_won(chosen_word: str, display: list[str]) -> bool:
+    if chosen_word == ''.join(display):
+        print("You won!")
+        return True
+    else:
+        return False
+
 
 def main() -> None:
     chosen_word = random.choice(word_list)
     display = ['_' for _ in chosen_word]
+    end_of_game = False
 
     # Testing code
     print(f'Pssst, the solution is {chosen_word}.')
 
-    guess = input("Guess a letter: ").lower()
+    while not end_of_game:
+        guess = input("Guess a letter: ").lower()
 
-    for index, letter in enumerate(chosen_word):
-        display[index] = guess if guess == letter else display[index]
+        for index, letter in enumerate(chosen_word):
+            display[index] = guess if guess == letter else display[index]
+        print(' '.join(display))
 
-    print(' '.join(display))
+        end_of_game = player_has_won(chosen_word, display)
+
+    sys.exit()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(1)
