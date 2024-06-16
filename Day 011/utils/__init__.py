@@ -127,13 +127,13 @@ CARDS = {
 
 
 def calculate_hand(hand: list[tuple[str, str]]) -> int:
-    card_names = [card[0] for card in hand]
+    _card_names = [card[0] if card[0] != 'A' else 'Z' for card in hand]
 
     result = 0
-    for card in sorted(card_names):
-        if result <= 10 and card == 'A':
+    for card in sorted(_card_names):
+        if result <= 10 and card == 'Z':
             result += CARDS['A']['value'][1]
-        elif card == 'A':
+        elif card == 'Z':
             result += CARDS['A']['value'][0]
         else:
             result += CARDS[card]['value']
@@ -164,13 +164,12 @@ def evaluate_winner(player_hand: list[tuple[str, str]],
 
     message = '\t'
 
-    if has_blackjack(player_hand) or has_blackjack(cpu_hand):
-        message += "BLACKJACK! "
-    elif _player_bust or _cpu_bust:
+    if _player_bust or _cpu_bust:
         message += "It's a BUST! "
+    elif has_blackjack(player_hand) or has_blackjack(cpu_hand):
+        message += "BLACKJACK! "
 
-    if ((has_blackjack(player_hand) and has_blackjack(cpu_hand)) or
-            (_player_result == _cpu_result)):
+    if _player_result == _cpu_result:
         message += 'Draw 🙃'
     elif not _player_bust and (
             _cpu_bust or has_blackjack(player_hand)

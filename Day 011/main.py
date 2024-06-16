@@ -37,19 +37,19 @@ def render_game() -> str:
             lambda x: x.lower() in ['yes', 'y', 'no', 'n'] or x == '',
             "blue")
         if draw_again in ['no', 'n']:
-            _keep_playing = False  # Ends game
+            _keep_playing = False  # Ends player turn
         else:
             player_hand.append(deal_cards())
             player_score = calculate_hand(player_hand)
-            if cpu_score < 17:
-                cpu_hand.append(deal_cards())
-                cpu_score = calculate_hand(cpu_hand)
 
         # Endgame conditions
-        if has_blackjack(player_hand) or has_blackjack(cpu_hand):
+        if player_score >= 21:
             _keep_playing = False
-        if cpu_score > 21 or player_score > 21:
-            _keep_playing = False
+
+    if player_score < 21:
+        while cpu_score < 17:
+            cpu_hand.append(deal_cards())
+            cpu_score = calculate_hand(cpu_hand)
 
     evaluate_winner(player_hand, cpu_hand)
     return check_input(
