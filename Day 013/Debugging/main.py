@@ -14,19 +14,20 @@
 
 # # Reproduce the Bug
 # index out of range: fix dice_imgs[dice_num] -> dice_imgs[dice_num - 1]
-from random import randint
+# from random import randint
 
-dice_imgs = ["❶", "❷", "❸", "❹", "❺", "❻"]
-dice_num = randint(1, 6)
-print(dice_num)
-print(dice_imgs[dice_num - 1])
+# dice_imgs = ["❶", "❷", "❸", "❹", "❺", "❻"]
+# dice_num = randint(1, 6)
+# print(dice_num)
+# print(dice_imgs[dice_num - 1])
 
 # # Play Computer
-# year = int(input("What's your year of birth?"))
-# if year > 1980 and year < 1994:
-#   print("You are a millenial.")
-# elif year > 1994:
-#   print("You are a Gen Z.")
+# input 1994 not defined: fix elif year > 1994 -> elif year >= 1994
+year = int(input("What's your year of birth?"))
+if year > 1980 and year < 1994:
+    print("You are a millenial.")
+elif year >= 1994:
+    print("You are a Gen Z.")
 
 # # Fix the Errors
 # age = input("How old are you?")
