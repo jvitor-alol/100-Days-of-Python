@@ -2,14 +2,15 @@
 import os
 import sys
 
-from utils import MENU, COINS
-from utils import check_input
 from utils import Coffee
+from utils import check_input
+from utils import MENU, COINS
 
 RESOURCES = {
     "water": 300,
     "milk": 200,
     "coffee": 100,
+    "money": 0
 }
 
 ESPRESSO = Coffee(
@@ -33,36 +34,49 @@ CAPPUCCINO = Coffee(
 )
 
 
-def make_coffee(coffee_type: Coffee) -> None:
-    if is_enough_ingredients(coffee_type):
-        print("-- Insert your coins --")
-        quarters = check_input(
-            "Quarters: ",
-            lambda x: int(x).isdigit()
-        )
-        dimes = check_input(
-            "Dimes: ",
-            lambda x: int(x).isdigit()
-        )
-        nickles = check_input(
-            "Nickles: ",
-            lambda x: int(x).isdigit()
-        )
-        pennies = check_input(
-            "Pennies: ",
-            lambda x: int(x).isdigit()
-        )
+def make_coffee(coffee_type: Coffee, coffee_name: str) -> None:
+    if not is_enough_ingredients(coffee_type):
+        return
 
-    total_money = (
+    print(f"-- Insert your coins (${coffee_type.cost:.2f}) --")
+    quarters = int(check_input(
+        "Quarters ($0.25): ",
+        lambda x: x.isdigit()
+    ))
+    dimes = int(check_input(
+        "Dimes ($0.10): ",
+        lambda x: x.isdigit()
+    ))
+    nickles = int(check_input(
+        "Nickles ($0.05): ",
+        lambda x: x.isdigit()
+    ))
+    pennies = int(check_input(
+        "Pennies ($0.01): ",
+        lambda x: x.isdigit()
+    ))
+
+    inserted_money = (
         quarters * COINS['quarter'] +
         dimes * COINS['dime'] +
         nickles * COINS['nickle'] +
         pennies * COINS['penny']
     )
 
-    if coffee_type.cost > total_money:
+    if coffee_type.cost > inserted_money:
         print(
-            f"Sorry that's not enough money. Money refunded: $ {total_money}.")
+            f"Sorry that's not enough. Money refunded: ${inserted_money}.")
+    else:
+        RESOURCES['water'] -= coffee_type.water
+        RESOURCES['milk'] -= coffee_type.milk
+        RESOURCES['coffee'] -= coffee_type.coffee
+        RESOURCES['money'] += coffee_type.cost
+
+        if inserted_money > coffee_type.cost:
+            change = round(inserted_money - coffee_type.cost, 2)
+            print(f"Here is ${change:.2f} dollars in change.")
+
+        print(f"Here is your {coffee_name}. Enjoy!")
 
 
 def is_enough_ingredients(coffee_type: Coffee) -> bool:
@@ -89,8 +103,11 @@ def is_enough_ingredients(coffee_type: Coffee) -> bool:
         return True
 
 
-def machine_report():
-    pass
+def machine_report() -> None:
+    print(f"Water: {RESOURCES['water']}ml")
+    print(f"Milk: {RESOURCES['milk']}ml")
+    print(f"Coffee: {RESOURCES['coffee']}g")
+    print(f"Money: ${RESOURCES['money']}")
 
 
 def display_menu(valid_options: tuple[str]) -> bool:
@@ -102,11 +119,11 @@ def display_menu(valid_options: tuple[str]) -> bool:
 
     match (option):
         case 'espresso':
-            make_coffee(ESPRESSO)
+            make_coffee(ESPRESSO, option)
         case 'latte':
-            make_coffee(LATTE)
+            make_coffee(LATTE, option)
         case 'cappuccino':
-            make_coffee(CAPPUCCINO)
+            make_coffee(CAPPUCCINO, option)
         case 'off':
             print("Shutting off the machine")
             return False
@@ -114,6 +131,12 @@ def display_menu(valid_options: tuple[str]) -> bool:
             machine_report()
         case _:
             print("Command not recognized")
+
+    keep_on = check_input(  # Keeps the terminal from being cleared
+        "Continue? [Y/n]: ",
+        lambda x: x.lower() in ['y', 'n'] or x == '').lower()
+    if keep_on == 'n':
+        return False
 
     return True
 
@@ -124,6 +147,8 @@ def main() -> None:
 
     while is_on:
         is_on = display_menu(valid_options)
+
+    sys.exit()
 
 
 if __name__ == '__main__':

@@ -1,3 +1,10 @@
+"""
+This module provides utility functions for input validation.
+
+Functions:
+    check_input: Prompts the user for input until a specified condition is met.
+"""
+
 import sys
 import time
 
@@ -23,12 +30,11 @@ def check_input(message: str, condition: Callable[[str], bool],
         str: The user's input that satisfies the specified condition.
 
     Exceptions:
-        ValueError: Caught and logged if there is an error converting a value.
-        Exception: Caught and logged if an unexpected error occurs.
+        ValueError: Continues if there is an error converting a value.
+        (e.g. Float to Int)
 
     The loop will continue to prompt the user for input until the condition
-    is satisfied. If an error occurs (ValueError or another Exception),
-    a warning message will be logged and the input will be requested again.
+    is satisfied.
     """
 
     def clear_input_line() -> None:
@@ -46,12 +52,7 @@ def check_input(message: str, condition: Callable[[str], bool],
             satisfies_condition: bool = condition(value)
         except ValueError:
             clear_input_line()
-            # logger.warning(f"Error converting {value} to number: {ve}")
             continue
-        # except Exception:
-        #     clear_input_line()
-        #     # logger.warning(f"Unexpected error: {e}")
-        #     continue
         else:
             if satisfies_condition:
                 return value
