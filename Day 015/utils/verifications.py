@@ -31,7 +31,7 @@ def check_input(message: str, condition: Callable[[str], bool],
 
     Exceptions:
         ValueError: Continues if there is an error converting a value.
-        (e.g. Float to Int)
+        (e.g., float to int)
 
     The loop will continue to prompt the user for input until the condition
     is satisfied.
