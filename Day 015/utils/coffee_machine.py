@@ -1,12 +1,22 @@
 """
-Module representing a coffee machine with functionalities to make \
+Module representing a coffee machine with functionalities to make
 different types of coffee.
 
-This module includes a Machine class that tracks resources such as \
-water, milk, coffee (in grams), and money, allows users to choose \
-drinks, check available resources, and refill resources as needed.
-"""
+This module includes the CoffeeMachine class that tracks resources
+such as water, milk, coffee (in grams), and money, allows users to
+choose drinks, check available resources, and refill resources as
+needed.
 
+Classes:
+    CoffeeMachine: Represents a coffee machine with predefined \
+    resources and menu options.
+
+Constants:
+    LOGO (str): ASCII art logo for the coffee machine.
+    UNITS (dict): Units for resources (water, milk, coffee, money).
+    COINS (dict): Coin values in dollars.
+    DEFAULT_MENU (dict): Default menu with predefined coffee types.
+"""
 import os
 from typing import Union
 from textwrap import dedent
@@ -38,10 +48,53 @@ DEFAULT_MENU = {
 
 
 class CoffeeMachine:
+    """
+    A class representing a coffee machine with predefined resources \
+    and menu options.
+
+    Attributes:
+        - menu (dict): A dictionary containing the coffee types
+            available in the machine.
+        - options (list): A list of valid options for the machine
+            (default options: 'off', 'report', 'restock').
+        - resources (dict): A dictionary tracking the machine's
+            resources, including water, milk, coffee, and money.
+
+    Methods:
+        - resources (property): Gets the current resources of the
+            machine.
+        - resources.setter: Sets the resources for the machine. All
+            resources must be set and non-negative.
+        - menu (property): Gets the coffee menu of the machine.
+        - menu.setter: Sets a new menu. Must contain at least one type
+            of coffee.
+        - options (property): Gets the valid options for the machine.
+        - options.setter: Sets new valid options. Must include the
+            default operations.
+        - display(): Displays the menu options, prompts user
+            interaction, and handles chosen options. Returns True to
+            continue, False to stop.
+        - is_ingredients_sufficient(coffee_type): Checks if there are
+            enough ingredients for the specified coffee type. Returns
+            True if sufficient, False otherwise.
+        - insert_coins(): Static method that processes inserted coins
+            and returns the total amount in dollars.
+        - make_coffee(coffee_type): Processes the making of the
+            specified coffee type. Handles ingredient checks, coin
+            insertion, and dispenses change if needed.
+        - machine_report(): Prints a report of the current resources.
+        - machine_restock(): Allows restocking of specific resources.
+            Prompts the user for the type and amount of resource to
+            restock.
+    """
+
     def __init__(self, menu: dict[str, Coffee] = DEFAULT_MENU) -> None:
         """
-        Initializes a new instance of the CoffeeMachine class with \
-        predefined resources and options.
+        Initialize a new instance of the CoffeeMachine class.
+
+        Args:
+            menu (dict): A dictionary of coffee types available in the
+                machine.
         """
         self._menu = menu
         self._options = ['off', 'report', 'restock']
@@ -54,14 +107,24 @@ class CoffeeMachine:
 
     @property
     def resources(self) -> dict[str, Union[int, float]]:
-        """Gets current coffee machine resources."""
+        """
+        Get current coffee machine resources.
+
+        Returns:
+            dict: A dictionary of current resources.
+        """
         return self._resources
 
     @resources.setter
     def resources(self, new_resources: dict[str, Union[int, float]]) -> None:
-        """Sets the resources for a coffee machine instance. \
-        All resources (water, milk, coffee and money) must be set and \
-        positive (or 0).
+        """
+        Set the resources for a coffee machine instance.
+
+        Args:
+            new_resources (dict): A dictionary with new resources.
+
+        Raises:
+            ValueError: If any resource is missing or negative.
         """
         if (('water' not in new_resources.keys()) or
             ('milk' not in new_resources.keys()) or
@@ -79,12 +142,26 @@ class CoffeeMachine:
 
     @property
     def menu(self) -> dict[str, Coffee]:
-        """Gets coffee machine menu."""
+        """
+        Get coffee machine menu.
+
+        Returns:
+            dict: A dictionary of coffee types available in the
+            machine.
+        """
         return self._menu
 
     @menu.setter
     def menu(self, new_menu: dict[str, Coffee]) -> None:
-        """Sets a menu. Must have at least one type of coffee."""
+        """
+        Set a menu.
+
+        Args:
+            new_menu (dict): A dictionary with new menu items.
+
+        Raises:
+            ValueError: If the menu is empty or invalid.
+        """
         if not new_menu:
             raise ValueError("Menu must contain at least one item")
 
@@ -98,13 +175,24 @@ class CoffeeMachine:
 
     @property
     def options(self) -> list[str]:
-        """Gets all valid options for the machine."""
+        """
+        Get all valid options for the machine.
+
+        Returns:
+            list: A list of valid options.
+        """
         return self._options
 
     @options.setter
     def options(self, new_options: list[str]) -> None:
-        """Sets all valid options. Must contain the default operations \
-        (off, report and restock).
+        """
+        Set all valid options.
+
+        Args:
+            new_options (list): A list with new options.
+
+        Raises:
+            ValueError: If required options are missing.
         """
         if (('off' not in new_options) or ('restock' not in new_options) or
                 ('report' not in new_options)):
@@ -113,9 +201,10 @@ class CoffeeMachine:
 
     def display(self) -> bool:
         """
-        Displays the menu options of the coffee machine, prompts the \
-        user to choose a drink, and handles user interactions based on \
-        the chosen option.
+        Display the menu options of the coffee machine.
+
+        Prompts the user to choose a drink and handles user
+        interactions.
 
         Returns:
             bool: True to continue running the machine, False to stop.
@@ -129,6 +218,7 @@ class CoffeeMachine:
         ])
         menu_table.align = 'l'
         print(LOGO + '\n\n')
+        # Display centered rainbow menu_table
         for i, line in enumerate(str(menu_table).split('\n')):
             print(f"\033[3{i % 6 + 1}m\t\t\t\t\t" + line)
 
@@ -155,12 +245,10 @@ class CoffeeMachine:
 
     def is_ingredients_sufficient(self, coffee_type: Coffee) -> bool:
         """
-        Checks if there are enough ingredients in the machine to make \
-        a specific type of coffee.
+        Check if there are enough ingredients to make a specific coffee.
 
         Args:
-            coffee_type (Coffee): An instance of Coffee representing \
-                the type of coffee to be checked.
+            coffee_type (Coffee): The type of coffee to be checked.
 
         Returns:
             bool: True if there are enough ingredients, False otherwise.
@@ -194,8 +282,7 @@ class CoffeeMachine:
     @staticmethod
     def insert_coins() -> float:
         """
-        Processes the number of coins inserted in the machine and \
-        returns the total in dollars.
+        Process the number of coins inserted and return the total.
 
         Returns:
             float: The sum in dollars of all inserted coins.
@@ -227,16 +314,13 @@ class CoffeeMachine:
 
     def make_coffee(self, coffee_type: Coffee) -> None:
         """
-        Processes the making of a specific type of coffee. Prompts the \
-        user for coins, checks if enough money is inserted, and \
-        dispenses change if needed.
+        Process the making of a specific type of coffee.
+
+        Prompts the user for coins, checks if enough money is inserted,
+        and dispenses change if needed.
 
         Args:
-            coffee_type (Coffee): An instance of Coffee representing \
-                the type of coffee to be made.
-
-        Returns:
-            None
+            coffee_type (Coffee): The type of coffee to be made.
         """
         if not self.is_ingredients_sufficient(coffee_type):
             return
@@ -268,10 +352,7 @@ class CoffeeMachine:
 
     def machine_report(self) -> None:
         """
-        Prints a report of the current resources of the coffee machine.
-
-        Returns:
-            None
+        Print a report of the current resources of the coffee machine.
         """
         os.system('cls' if os.name == 'nt' else 'clear')
         print(colored("*********** REPORT ***********\n", "red"))
@@ -284,12 +365,10 @@ class CoffeeMachine:
 
     def machine_restock(self) -> None:
         """
-        Allows restocking of specific resources (water, milk, coffee) \
-        in the coffee machine. Prompts the user for the type and \
-        amount of resource to restock.
+        Allow restocking of specific resources in the coffee machine.
 
-        Returns:
-            None
+        Prompts the user for the type and amount of resource to
+        restock.
         """
         os.system('cls' if os.name == 'nt' else 'clear')
         print(colored("**************** RESTOCK ****************\n", "red"))

@@ -1,12 +1,11 @@
 """
-This module defines the constants used in the coffee machine \
+This module defines the menu used in the coffee machine \
 application.
 
 Constants:
     MENU (dict): A dictionary containing the menu items with their \
         respective ingredients and costs.
 """
-
 from .coffee import Coffee
 
 MENU = {

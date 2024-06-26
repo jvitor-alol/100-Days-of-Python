@@ -1,5 +1,5 @@
 """
-This module defines the Coffee class used to represent different \
+This module defines the Coffee class used to represent different
 types of coffee beverages.
 
 Classes:
