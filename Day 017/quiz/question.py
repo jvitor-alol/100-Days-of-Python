@@ -8,7 +8,7 @@ class Question:
         return self._text
 
     @text.setter
-    def text(self, new_text: str) -> str:
+    def text(self, new_text: str) -> None:
         if len(new_text) < 10:
             raise ValueError("Question is too short")
         self._text = new_text

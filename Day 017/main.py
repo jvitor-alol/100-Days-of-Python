@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-from quiz import QUESTION_DATA, Question
+import sys
+
+from quiz import QUESTION_DATA, Question, QuizBrain
 
 
 def main() -> None:
@@ -8,8 +10,12 @@ def main() -> None:
         question in QUESTION_DATA
     ]
 
-    print(question_bank[0].text, question_bank[0].answer)
+    quiz_brain = QuizBrain(question_bank)
+    quiz_brain.display_game()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(1)

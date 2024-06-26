@@ -1,4 +1,5 @@
 from .data import QUESTION_DATA
-from .questions import Question
+from .question import Question
+from .quiz_brain import QuizBrain
 
-__all__ = ['QUESTION_DATA', 'Question']
+__all__ = ['QUESTION_DATA', 'Question', 'QuizBrain']
