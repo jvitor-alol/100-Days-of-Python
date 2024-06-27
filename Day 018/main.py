@@ -20,7 +20,7 @@ def main() -> None:
     parser = ArgumentParser()
     parser.add_argument(
         '-o', '--option', type=int,
-        choices=range(2), default=0)
+        choices=range(3), default=0)
     args = parser.parse_args()
 
     slow_moe = t.Turtle()
@@ -32,6 +32,8 @@ def main() -> None:
             square_dashed_diagonal(slow_moe)
         case 1:
             different_shapes(slow_moe)
+        case 2:
+            random_walk(slow_moe)
         case _:
             sys.exit(1)
 
@@ -66,6 +68,16 @@ def change_color(turtle: t.Turtle):
     G = random.random()
 
     turtle.color(R, G, B)
+
+
+def random_walk(turtle: t.Turtle, iterations=200, speed=10) -> None:
+    directions = [0, 90, 180, 270]
+    turtle.pensize(10)
+    turtle.speed(speed)
+    for _ in range(iterations):
+        change_color(turtle)
+        turtle.setheading(random.choice(directions))
+        turtle.fd(20)
 
 
 if __name__ == '__main__':
