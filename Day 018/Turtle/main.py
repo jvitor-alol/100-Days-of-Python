@@ -20,7 +20,7 @@ def main() -> None:
     parser = ArgumentParser()
     parser.add_argument(
         '-o', '--option', type=int,
-        choices=range(3), default=0)
+        choices=range(4), default=0)
     args = parser.parse_args()
 
     slow_moe = t.Turtle()
@@ -34,6 +34,8 @@ def main() -> None:
             different_shapes(slow_moe)
         case 2:
             random_walk(slow_moe)
+        case 3:
+            spirograph(slow_moe)
         case _:
             sys.exit(1)
 
@@ -41,7 +43,7 @@ def main() -> None:
     my_screen.exitonclick()
 
 
-def square_dashed_diagonal(turtle: t.Turtle):
+def square_dashed_diagonal(turtle: t.Turtle) -> None:
     for _ in range(4):
         turtle.forward(100)
         turtle.left(90)
@@ -54,7 +56,7 @@ def square_dashed_diagonal(turtle: t.Turtle):
         turtle.pendown()
 
 
-def different_shapes(turtle: t.Turtle):
+def different_shapes(turtle: t.Turtle) -> None:
     for sides in shapes.values():
         for _ in range(sides):
             turtle.forward(100)
@@ -62,7 +64,7 @@ def different_shapes(turtle: t.Turtle):
         change_color(turtle)
 
 
-def change_color(turtle: t.Turtle):
+def change_color(turtle: t.Turtle) -> None:
     R = random.random()
     B = random.random()
     G = random.random()
@@ -78,6 +80,14 @@ def random_walk(turtle: t.Turtle, iterations=200, speed=10) -> None:
         change_color(turtle)
         turtle.setheading(random.choice(directions))
         turtle.fd(20)
+
+
+def spirograph(turtle: t.Turtle, num_circles: int = 100) -> None:
+    turtle.speed('fastest')
+    for _ in range(num_circles):
+        change_color(turtle)
+        turtle.circle(100)
+        turtle.left(360 / num_circles)
 
 
 if __name__ == '__main__':
