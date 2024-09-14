@@ -1,5 +1,3 @@
-from .snake import Snake
-from .food import Food
-from .scoreboard import Scoreboard
+from .game import game_loop
 
-__all__ = ['Snake', 'Food', 'Scoreboard']
+__all__ = ['game_loop']
