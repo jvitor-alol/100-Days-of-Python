@@ -128,3 +128,13 @@ class Snake:
         is_ycor_in = bounds['y'][0] <= head.ycor() <= bounds['y'][1]
 
         return not (is_xcor_in and is_ycor_in)
+
+    def reset(self) -> None:
+        self.hidesnake()
+        self.body.clear()
+
+        self.create_snake_body()
+
+    def hidesnake(self) -> None:
+        for segment in self.body:
+            segment.hideturtle()
